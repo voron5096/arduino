@@ -52,11 +52,11 @@ void loop() {
             len_str++ ; // Счётчик длины строки.
             //lcd.clear() ;
             //lcd.setCursor(1,0);lcd.print("Бегущая строка") ;
-            for (byte i=0 ; i < 16; i++) {  // Отображаем на LCD посимвольно.
+            for (byte i = 0; i < 16; i++) {  // Отображаем на LCD посимвольно.
                 lcd.setCursor(i,1);
                 lcd.print(string_lcd[i]);
                 lcd.setCursor(0,1);
-                    // lcd.print(' тест ');
+                // lcd.print(' тест ');
             }
             delay(200);
             //blink( 13 , 190 ) ; // Задержка отображения строки и мигание светодиодом ))
@@ -75,6 +75,7 @@ void loop() {
             //lcd.clear() ;
             //lcd.setCursor(1,0);lcd.print("Бегущая строка") ;
 
+            //--------------- Батарейка ----------------------//
             float voltage = analogRead(A0) / 1024.0 * 10.0 + 0.2;
             float voltageTemp;
             if (voltage > 0.5) {
@@ -86,8 +87,9 @@ void loop() {
             lcd.setCursor(1, 0);
             lcd.print(voltageTemp, 2);
             lcd.print(" \x42\x6f\xbb\xc4\xbf");
+            //--------------- Батарейка ----------------------//
 
-            for (byte i=0 ; i < 16 ; i++) {
+            for (byte i = 0; i < 16; i++) {
                 lcd.setCursor(i,1);
                 lcd.print(string_lcd[i]);
                 lcd.setCursor(0,1);
