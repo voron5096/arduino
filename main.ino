@@ -25,74 +25,76 @@ const unsigned char rus_codes[66]=
 } ;
 */
 
- const char *strings[] = {
-                   "\xA5\x42\xa0\x4F-05-22",
-                   "\xAA\xb8\xbb\xb8\xbe\xbe\x6f\xB3",
-                   "test2"
-                    };
+const char *strings[] = {
+    "\xA5\x42\xa0\x4F-05-22",
+    "\xAA\xb8\xbb\xb8\xbe\xbe\x6f\xB3",
+    "test2"
+};
+
 char string_lcd[] = "                    ";
+
 byte num_str = 3; //кол-во прокручевыемых строк
+
 void setup() {
-  lcd.begin(16, 2);
+    lcd.begin(16, 2);
 }
+
 void loop() {
+    for (byte k = 0; k < num_str; k++) { //Перебор строк.
+        word len_str  = 0;
+        while (*strings[k]) {  // Пока не конец строки ...
+            for (byte i=0 ; i < 15 ; i++)
+                string_lcd[i] = string_lcd[i+1] ; // Производим побайтовый сдвиг влево,
+            string_lcd[15] = *strings[k] ;                                  // отображаемой на LCD строки, и добавляем
+            strings[k]++ ;                                                  // символ в последний байт.
+            len_str++ ; // Счётчик длины строки.
+                //lcd.clear() ;
+                //lcd.setCursor(1,0);lcd.print("Бегущая строка") ;
 
-
-  for (byte k = 0 ; k < num_str ; k++) { //Перебор строк.
-  word len_str  = 0;
-    while (*strings[k])  {  // Пока не конец строки ...
-           for (byte i=0 ; i < 15 ; i++)
-            string_lcd[i] = string_lcd[i+1] ; // Производим побайтовый сдвиг влево,
-           string_lcd[15] = *strings[k] ;                                  // отображаемой на LCD строки, и добавляем
-           strings[k]++ ;                                                  // символ в последний байт.
-           len_str++ ; // Счётчик длины строки.
-             //lcd.clear() ;
-             //lcd.setCursor(1,0);lcd.print("Бегущая строка") ;
-
-            for (byte i=0 ; i < 16 ; i++) {  // Отображаем на LCD посимвольно.
-                 lcd.setCursor(i,1);
-                 lcd.print(string_lcd[i]);
-                 lcd.setCursor(0,1);
-                 // lcd.print(' тест ');
-             }
-           delay(200);
-           //blink( 13 , 190 ) ; // Задержка отображения строки и мигание светодиодом ))
-          
-  }
-  for (word n = 0 ; n < len_str ; n++)
-    strings[k]-- ; //Возвращаем указатель на начало строки.
-                                                      //Иначе строки прокрутятся тольео один раз.
-
-
-  for (byte n = 0 ; n < 16 ; n++) {
-       for (byte i=0 ; i < 15 ; i++)
-        string_lcd[i] = string_lcd[i+1] ; //Добиваем строку пробелами.
-       string_lcd[15] = ' ';
-       //lcd.clear() ;
-
-       //lcd.setCursor(1,0);lcd.print("Бегущая строка") ;
-
-        float voltage = analogRead(A0) / 1024.0 * 10.0 + 0.2;
-        float voltageTemp;
-        if (voltage > 0.5) {
-        voltageTemp = voltage;
+                for (byte i=0 ; i < 16 ; i++) {  // Отображаем на LCD посимвольно.
+                    lcd.setCursor(i,1);
+                    lcd.print(string_lcd[i]);
+                    lcd.setCursor(0,1);
+                    // lcd.print(' тест ');
+                }
+            delay(200);
+            //blink( 13 , 190 ) ; // Задержка отображения строки и мигание светодиодом ))
+            
         }
-        else {
-        voltageTemp = 0;
-        }
-        lcd.setCursor(1, 0);
-        lcd.print(voltageTemp, 2);
-        lcd.print(" \x42\x6f\xbb\xc4\xbf");
+        for (word n = 0; n < len_str; n++)
+            strings[k]-- ; //Возвращаем указатель на начало строки.
+        //Иначе строки прокрутятся тольео один раз.
 
-           for (byte i=0 ; i < 16 ; i++) {
+
+        for (byte n = 0 ; n < 16 ; n++) {
+            for (byte i=0 ; i < 15 ; i++)
+                string_lcd[i] = string_lcd[i+1] ; //Добиваем строку пробелами.
+            string_lcd[15] = ' ';
+            //lcd.clear() ;
+
+            //lcd.setCursor(1,0);lcd.print("Бегущая строка") ;
+
+            float voltage = analogRead(A0) / 1024.0 * 10.0 + 0.2;
+            float voltageTemp;
+            if (voltage > 0.5) {
+                voltageTemp = voltage;
+            }
+            else {
+                voltageTemp = 0;
+            }
+            lcd.setCursor(1, 0);
+            lcd.print(voltageTemp, 2);
+            lcd.print(" \x42\x6f\xbb\xc4\xbf");
+
+            for (byte i=0 ; i < 16 ; i++) {
                 lcd.setCursor(i,1);
                 lcd.print(string_lcd[i]);
                 lcd.setCursor(0,1);
                 lcd.print(' ');
-             }
-           delay(300);
-           //blink( 13 , 190 ) ;
-  }
-   delay(2000);
- }
+            }
+            delay(300);
+            //blink( 13 , 190 ) ;
+        }
+        delay(2000);
+    }
 }
